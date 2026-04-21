@@ -4,6 +4,16 @@ import scanner  # This imports your working Phase 1 engine!
 # --- UI Configuration ---
 st.set_page_config(page_title="CodeShield DLP", page_icon="🛡️", layout="wide")
 
+# --- HIDE STREAMLIT BRANDING ---
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
 st.title("🛡️ CodeShield")
 st.markdown("### Data Loss Prevention Engine")
 st.markdown("Detect and redact sensitive secrets, API keys, and credentials from your codebase before pushing to production.")
