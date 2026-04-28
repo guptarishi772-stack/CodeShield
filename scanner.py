@@ -16,7 +16,6 @@ load_dotenv(override=True)
 # --- Configuration ---
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
-# ... (the rest of your code remains the same) ...
 
 # --- The System Prompt ---
 SYSTEM_PROMPT = """
