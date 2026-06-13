@@ -95,11 +95,17 @@ if analyze_button:
                 
                 threats = report.get("threat_summary", [])
                 
-                # Logic: Did we find secrets?
+                # Logic: Did we find secrets, or did the engine crash?
                 if not threats:
-                    st.success("✅ **CLEAN:** No hardcoded secrets or vulnerabilities detected.")
-                    with st.expander("View Sanitized Code"):
-                        st.code(report.get("sanitized_code", ""), language="python")
+                    # THE FIX: Catch the silent failure!
+                    if "Error" in report.get("sanitized_code", ""):
+                        st.error("⚠️ **SCAN ABORTED:** The AI engine failed to process the code (Google API Overload). Do not trust this result.")
+                        with st.expander("View Error Log"):
+                            st.code(report.get("sanitized_code", ""), language="text")
+                    else:
+                        st.success("✅ **CLEAN:** No hardcoded secrets or vulnerabilities detected.")
+                        with st.expander("View Sanitized Code"):
+                            st.code(report.get("sanitized_code", ""), language="python")
                 else:
                     # Metrics Display
                     m1, m2 = st.columns(2)
