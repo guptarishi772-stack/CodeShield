@@ -3,7 +3,7 @@ import requests
 import time
 
 # --- CONFIGURATION ---
-API_URL = "http://127.0.0.1:8000/scan"
+API_URL = "https://codeshield-api.onrender.com/scan"
 st.set_page_config(page_title="CodeShield DLP", page_icon="🛡️", layout="wide", initial_sidebar_state="expanded")
 
 # --- CUSTOM CSS (Sleek UI tweaks) ---
