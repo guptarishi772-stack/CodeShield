@@ -27,7 +27,7 @@ with st.sidebar:
     st.markdown("### System Status")
     # A pro-level trick: Ping the backend to see if it's alive
     try:
-        requests.get("http://127.0.0.1:8000/docs", timeout=1)
+        requests.get("https://codeshield-api.onrender.com", timeout=60)
         st.success("🟢 Backend Engine: **Online**")
     except requests.exceptions.ConnectionError:
         st.error("🔴 Backend Engine: **Offline**")
