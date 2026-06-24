@@ -83,7 +83,7 @@ if analyze_button:
             
             try:
                 # Send the data to your API engine
-                response = requests.post(API_URL, json=payload, timeout=30)
+                response = requests.post(API_URL, json=payload, timeout=60)
                 response.raise_for_status() # Trigger error if status code is not 200
                 report = response.json()
                 
