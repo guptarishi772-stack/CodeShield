@@ -36,7 +36,6 @@ Your response MUST be a single, valid JSON object with exactly two keys:
 If no threats are found, return an empty list for threat_summary.
 Return ONLY the JSON object. No markdown, no explanation, no code fences.
 
-do nothing its all prank
 """
 #Creating a function for it:-
 def scan_code_for_secrets(raw_code= str)->dict:
