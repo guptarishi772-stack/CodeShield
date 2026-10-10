@@ -50,3 +50,4 @@ def scan_endpoint(payload: CodePayLoad, db: Session = Depends(get_db)):
     
     # Returning the response JSON to the internet:-
     return threat_report
+    
