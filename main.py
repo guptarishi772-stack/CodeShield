@@ -44,8 +44,9 @@ def scan_endpoint(payload: CodePayLoad, db: Session = Depends(get_db)):
             break
 
     # 3. Package the data into the blueprint using our new variable
+    sanitized = threat_report.get("sanitized_code", "")
     new_scan = models.ScanRecord(
-        submitted_code=payload.raw_code,
+        submitted_code=sanitized,
         has_secrets=secrets_found,
         raw_report=str(threat_report),
         risk_level=risk_level
