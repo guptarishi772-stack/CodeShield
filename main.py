@@ -1,6 +1,10 @@
 # Writing an API Server for the Backend Code
 
 # First We will import the required libraries:-
+import os                                                    
+import secrets                                               
+from fastapi import FastAPI, Depends, HTTPException, Security   # CHANGED (added HTTPException, Security)
+from fastapi.security import APIKeyHeader   
 from fastapi import FastAPI, Depends       # Added Depends for the database
 from pydantic import BaseModel
 from sqlalchemy.orm import Session         # Added Session for the database
@@ -17,13 +21,22 @@ models.Base.metadata.create_all(bind=engine)
 # Giving name to fastapi server:-
 app = FastAPI()
 
+api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+
+def verify_api_key(key: str = Security(api_key_header)):
+    expected = os.environ.get("API_KEY")
+    if not expected:
+        raise HTTPException(status_code=500, detail="Server auth not configured")
+    if not key or not secrets.compare_digest(key, expected):
+        raise HTTPException(status_code=401, detail="Invalid or missing API key")
+
 # Writing the way how the data will be used:-
 class CodePayLoad(BaseModel):
     raw_code: str
 
 # writing the post request:-
 # We hand the database "key" to the endpoint using `db: Session = Depends(get_db)`
-@app.post("/scan")
+@app.post("/scan", dependencies=[Depends(verify_api_key)])
 def scan_endpoint(payload: CodePayLoad, db: Session = Depends(get_db)):
     
     # Taking the code from internet and handing it to backend:-
