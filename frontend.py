@@ -6,6 +6,8 @@ import time
 API_URL = "https://codeshield-api.onrender.com/scan"
 st.set_page_config(page_title="CodeShield DLP", page_icon="🛡️", layout="wide", initial_sidebar_state="expanded")
 
+st.write(len(st.secrets["API_KEY"]))
+
 # --- CUSTOM CSS (Sleek UI tweaks) ---
 st.markdown("""
     <style>
@@ -83,7 +85,8 @@ if analyze_button:
             
             try:
                 # Send the data to your API engine
-                response = requests.post(API_URL, json=payload, timeout=60)
+                headers = {"X-API-Key": st.secrets["API_KEY"]}
+                response = requests.post(API_URL, json=payload, headers=headers, timeout=60)
                 response.raise_for_status() # Trigger error if status code is not 200
                 report = response.json()
                 
