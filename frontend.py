@@ -6,8 +6,6 @@ import time
 API_URL = "https://codeshield-api.onrender.com/scan"
 st.set_page_config(page_title="CodeShield DLP", page_icon="🛡️", layout="wide", initial_sidebar_state="expanded")
 
-st.write(len(st.secrets["API_KEY"]))
-
 # --- CUSTOM CSS (Sleek UI tweaks) ---
 st.markdown("""
     <style>
