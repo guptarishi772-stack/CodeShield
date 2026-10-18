@@ -134,5 +134,7 @@ if analyze_button:
                 status.update(label="Scan Failed", state="error", expanded=False)
                 if response.status_code == 503:
                     st.error("⚠️ **AI Engine Overloaded:** Google's Gemini API is experiencing high traffic. (Error 503). Your backend safely caught this error.")
+                elif response.status_code == 429:
+                    st.warning("⏳ **Too many scans right now.** Please wait a minute and try again.")    
                 else:
                     st.error(f"🚨 **Backend Error:** The server returned a {response.status_code} error.")
