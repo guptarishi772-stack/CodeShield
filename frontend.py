@@ -108,10 +108,19 @@ if analyze_button:
                         with st.expander("View Sanitized Code"):
                             st.code(report.get("sanitized_code", ""), language="python")
                 else:
-                    # Metrics Display
+                    # Work out the worst severity, same logic as the backend
+                    severity_priority = ["CRITICAL", "HIGH", "MEDIUM"]
+                    severities_found = {t.get("severity") for t in threats if isinstance(t, dict)}
+
+                    risk_level = "UNKNOWN"
+                    for level in severity_priority:
+                        if level in severities_found:
+                            risk_level = level
+                            break
+
                     m1, m2 = st.columns(2)
-                    m1.metric(label="Critical Secrets Found", value=len(threats))
-                    m2.metric(label="System Risk Level", value="HIGH", delta="- Immediate Action Required", delta_color="inverse")
+                    m1.metric(label="Threats Found", value=len(threats))
+                    m2.metric(label="System Risk Level", value=risk_level, delta="- Immediate Action Required", delta_color="inverse")
                     
                     st.error("🚨 **CRITICAL THREATS DETECTED:** Secrets must be removed before deployment.")
                     
