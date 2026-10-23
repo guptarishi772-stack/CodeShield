@@ -7,7 +7,7 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded                            
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from backend import scan_code_for_secrets
+from backend import scan_code_for_secrets, ScanEngineError
 
 import models
 from database import engine, get_db
@@ -37,7 +37,10 @@ class CodePayLoad(BaseModel):
 @limiter.limit("10/minute")                                               
 def scan_endpoint(request: Request, payload: CodePayLoad, db: Session = Depends(get_db)):   
 
-    threat_report = scan_code_for_secrets(payload.raw_code)
+    try:
+        threat_report = scan_code_for_secrets(payload.raw_code)
+    except ScanEngineError:
+        raise HTTPException(status_code=503, detail="Scan engine unavailable")
     threats = threat_report.get("threat_summary", [])
 
     secrets_found = "Yes" if len(threats) > 0 else "No"

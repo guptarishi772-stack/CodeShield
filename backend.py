@@ -37,6 +37,10 @@ If no threats are found, return an empty list for threat_summary.
 Return ONLY the JSON object. No markdown, no explanation, no code fences.
 
 """
+
+class ScanEngineError(Exception):
+    """Raised when the AI engine could not produce a valid scan."""
+
 #Creating a function for it:-
 def scan_code_for_secrets(raw_code= str)->dict:
    try: 
@@ -50,10 +54,10 @@ def scan_code_for_secrets(raw_code= str)->dict:
       result = json.loads(response.text)
       return result 
    except Exception as e:
-        # If ANYTHING crashes in the 'try' block, the code jumps down here immediately.
+    # If ANYTHING crashes in the 'try' block, the code jumps down here immediately.
         # Instead of crashing, we gracefully return a safe, default dictionary.
-        print(f"⚠️ Engine Error: {e}")
-        return {"sanitized_code": "Error: Could not process file.", "threat_summary": []}
+            print(f"⚠️ Engine Error: {e}")
+            raise ScanEngineError("Scan engine failed") from e
    
 TEST_CODE = """
 import requests
@@ -67,7 +71,7 @@ OPENAI_API_KEY = "fake-openai-key-123"
 def fetch_user_data(user_id):
     headers = {"Authorization": "Bearer fake-stripe-key-123"}
     response = requests.get(f"https://api.internal.company.com/users/{user_id}", headers=headers)
-    return response.json()
+    return response.json()e
 """
 
 
