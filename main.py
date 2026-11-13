@@ -8,7 +8,6 @@ from slowapi.errors import RateLimitExceeded
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from backend import scan_code_for_secrets, ScanEngineError
-
 import models
 from database import engine, get_db
 
